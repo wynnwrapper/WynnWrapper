@@ -1,4 +1,4 @@
-# WAPI Wrapper - A Java Wrapper for the Wynncraft Public API
+# WynnWrapper - A Java Wrapper for the Wynncraft Public API
 
 ## Overview
 
