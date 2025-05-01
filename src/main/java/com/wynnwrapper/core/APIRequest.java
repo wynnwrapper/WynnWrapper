@@ -13,6 +13,7 @@ import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +41,14 @@ public abstract class APIRequest {
             throw new WynnResponseException("No body in request response for " + requestURL, -1);
         }
         return apiHelper.gson().fromJson(jsonResponse, clazz);
+    }
+
+    public <T> T getResponse(Type type) {
+        String jsonResponse = getJSONResponse();
+        if (jsonResponse == null) {
+            throw new WynnResponseException("No body in request response for " + requestURL, -1);
+        }
+        return apiHelper.gson().fromJson(jsonResponse, type);
     }
 
     private String getJSONResponse() {
