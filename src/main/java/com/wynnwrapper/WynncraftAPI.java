@@ -4,7 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wynnwrapper.core.APIHelper;
 import com.wynnwrapper.core.RateLimiter;
-import com.wynnwrapper.data.player.WynncraftPlayer;
+import com.wynnwrapper.data.player.DetailedPlayer;
+import com.wynnwrapper.data.player.Player;
+import com.wynnwrapper.data.player.PlayerGlobalData;
+import com.wynnwrapper.data.player.ability.PlayerAbility;
+import com.wynnwrapper.data.player.ability.PlayerAbilityConnector;
+import com.wynnwrapper.data.player.ability.PlayerAbilityEntry;
+import com.wynnwrapper.data.player.character.Character;
+import com.wynnwrapper.data.player.character.DetailedCharacter;
 import com.wynnwrapper.routes.abilityaspects.AbilityAspectsRoute;
 import com.wynnwrapper.routes.classes.ClassesRoute;
 import com.wynnwrapper.routes.item.ItemRoute;
@@ -39,7 +46,15 @@ public class WynncraftAPI {
 
     public WynncraftAPI() {
         Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping()
-                .registerTypeAdapter(WynncraftPlayer.class, new WynncraftPlayer.WynncraftPlayerDeserializer())
+                .registerTypeAdapter(Player.class, new Player.PlayerDeserializer())
+                .registerTypeAdapter(PlayerGlobalData.class, new PlayerGlobalData.PlayerGlobalDataDeserializer())
+                .registerTypeAdapter(DetailedPlayer.class, new DetailedPlayer.DetailedPlayerDeserializer())
+                .registerTypeAdapter(DetailedCharacter.class, new DetailedCharacter.DetailedPlayerCharacterDeserializer())
+                .registerTypeAdapter(Character.class, new Character.PlayerCharacterDeserializer())
+                .registerTypeAdapter(PlayerAbility.class, new PlayerAbility.PlayerAbilityDeserializer())
+                .registerTypeAdapter(PlayerAbilityConnector.class, new PlayerAbilityConnector.PlayerAbilityConnectorDeserializer())
+                .registerTypeAdapter(PlayerAbilityEntry.class, new PlayerAbilityEntry.PlayerAbilityMapEntryDeserializer())
+                .registerTypeAdapter(PlayerAbility.class, new PlayerAbility.PlayerAbilityDeserializer())
                 .registerTypeAdapter(Date.class, new DateTimeDeserializer()).create();
         RateLimiter rateLimiter = new RateLimiter();
         this.helper = new APIHelper(gson, rateLimiter, baseURL, version, timeout);
