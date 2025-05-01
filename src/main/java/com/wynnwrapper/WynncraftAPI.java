@@ -7,6 +7,7 @@ import com.wynnwrapper.core.RateLimiter;
 import com.wynnwrapper.data.player.WynncraftPlayer;
 import com.wynnwrapper.routes.abilityaspects.AbilityAspectsRoute;
 import com.wynnwrapper.routes.classes.ClassesRoute;
+import com.wynnwrapper.routes.guild.GuildRoute;
 import com.wynnwrapper.routes.item.ItemRoute;
 import com.wynnwrapper.routes.leaderboard.LeaderboardRoute;
 import com.wynnwrapper.routes.map.MapRoute;
@@ -36,6 +37,7 @@ public class WynncraftAPI {
     private NewsRoute newsRoute;
     private PlayerRoute playerRoute;
     private SearchRoute searchRoute;
+    private GuildRoute guildRoute;
 
     public WynncraftAPI() {
         Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping()
@@ -53,6 +55,7 @@ public class WynncraftAPI {
         this.newsRoute = new NewsRoute(helper);
         this.playerRoute = new PlayerRoute(helper);
         this.searchRoute = new SearchRoute(helper);
+        this.guildRoute = new GuildRoute(helper);
     }
 
     public AbilityAspectsRoute abilityAspects() {
@@ -86,4 +89,6 @@ public class WynncraftAPI {
     public SearchRoute search() {
         return searchRoute;
     }
+
+    public GuildRoute guild() { return guildRoute; }
 }
