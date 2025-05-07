@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wynnwrapper.core.APIHelper;
 import com.wynnwrapper.core.RateLimiter;
+import com.wynnwrapper.data.abilityaspects.*;
 import com.wynnwrapper.data.player.DetailedPlayer;
 import com.wynnwrapper.data.player.Player;
 import com.wynnwrapper.data.player.PlayerGlobalData;
@@ -57,7 +58,16 @@ public class WynncraftAPI {
                 .registerTypeAdapter(PlayerAbilityConnector.class, new PlayerAbilityConnector.PlayerAbilityConnectorDeserializer())
                 .registerTypeAdapter(PlayerAbilityEntry.class, new PlayerAbilityEntry.PlayerAbilityMapEntryDeserializer())
                 .registerTypeAdapter(PlayerAbility.class, new PlayerAbility.PlayerAbilityDeserializer())
-                .registerTypeAdapter(Date.class, new DateTimeDeserializer()).create();
+                .registerTypeAdapter(Date.class, new DateTimeDeserializer())
+                .registerTypeAdapter(AbilityTree.class, new AbilityTree.AbilityTreeDeserializer())
+                .registerTypeAdapter(AbilityTreeArchetype.class, new AbilityTreeArchetype.AbilityTreeArchetypeDeserializer())
+                .registerTypeAdapter(AbilityTreeAbility.class, new AbilityTreeAbility.AbilityTreeAbilityDeserializer())
+                .registerTypeAdapter(AbilityMap.class, new AbilityMap.AbilityMapDeserializer())
+                .registerTypeAdapter(AbilityMapEntry.class, new AbilityMapEntry.AbilityMapEntryDeserializer())
+                .registerTypeAdapter(AspectsList.class, new AspectsList.AspectListDeserializer())
+                .create();
+
+        // Initialize the APIHelper with the base URL and timeout
         RateLimiter rateLimiter = new RateLimiter();
         this.helper = new APIHelper(gson, rateLimiter, baseURL, version, timeout);
 
