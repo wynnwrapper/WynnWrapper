@@ -13,6 +13,7 @@ import com.wynnwrapper.data.player.ability.PlayerAbilityConnector;
 import com.wynnwrapper.data.player.ability.PlayerAbilityEntry;
 import com.wynnwrapper.data.player.character.Character;
 import com.wynnwrapper.data.player.character.DetailedCharacter;
+import com.wynnwrapper.data.search.Item;
 import com.wynnwrapper.routes.abilityaspects.AbilityAspectsRoute;
 import com.wynnwrapper.routes.classes.ClassesRoute;
 import com.wynnwrapper.routes.guild.GuildRoute;
@@ -65,6 +66,7 @@ public class WynncraftAPI {
                 .registerTypeAdapter(AbilityMap.class, new AbilityMap.AbilityMapDeserializer())
                 .registerTypeAdapter(AbilityMapEntry.class, new AbilityMapEntry.AbilityMapEntryDeserializer())
                 .registerTypeAdapter(AspectsList.class, new AspectsList.AspectListDeserializer())
+                .registerTypeAdapter(Item.Identification.class, new Item.Identification.IdentificationDeserializer())
                 .create();
 
         // Initialize the APIHelper with the base URL and timeout
