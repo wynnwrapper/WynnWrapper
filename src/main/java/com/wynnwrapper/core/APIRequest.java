@@ -1,7 +1,5 @@
 package com.wynnwrapper.core;
 
-import com.google.gson.reflect.TypeToken;
-import com.wynnwrapper.exceptions.WynnConnectionException;
 import com.wynnwrapper.exceptions.WynnRateLimitException;
 import com.wynnwrapper.exceptions.WynnResponseException;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -42,6 +40,7 @@ public abstract class APIRequest {
         if (jsonResponse == null) {
             throw new WynnResponseException("No body in request response for " + requestURL, -1);
         }
+
         return apiHelper.gson().fromJson(jsonResponse, clazz);
     }
 
@@ -74,7 +73,7 @@ public abstract class APIRequest {
         if(apiHelper.rateLimiter().isRateLimited()) {
             throw new WynnRateLimitException("Cannot make request, rate limit would be exceeded. Please try again later.",
                     apiHelper.rateLimiter().rateLimitResetTimestamp(), true);
-        }
+
 
         RequestConfig config = RequestConfig.custom()
                 .setResponseTimeout(timeout, TimeUnit.MILLISECONDS)
