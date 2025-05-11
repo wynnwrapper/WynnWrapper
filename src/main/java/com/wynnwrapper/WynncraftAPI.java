@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wynnwrapper.core.APIHelper;
 import com.wynnwrapper.core.RateLimiter;
+import com.wynnwrapper.data.abilityaspects.*;
 import com.wynnwrapper.data.player.DetailedPlayer;
 import com.wynnwrapper.data.player.Player;
 import com.wynnwrapper.data.player.PlayerGlobalData;
@@ -12,6 +13,7 @@ import com.wynnwrapper.data.player.ability.PlayerAbilityConnector;
 import com.wynnwrapper.data.player.ability.PlayerAbilityEntry;
 import com.wynnwrapper.data.player.character.Character;
 import com.wynnwrapper.data.player.character.DetailedCharacter;
+import com.wynnwrapper.data.search.Item;
 import com.wynnwrapper.routes.abilityaspects.AbilityAspectsRoute;
 import com.wynnwrapper.routes.classes.ClassesRoute;
 import com.wynnwrapper.routes.guild.GuildRoute;
@@ -57,7 +59,17 @@ public class WynncraftAPI {
                 .registerTypeAdapter(PlayerAbilityConnector.class, new PlayerAbilityConnector.PlayerAbilityConnectorDeserializer())
                 .registerTypeAdapter(PlayerAbilityEntry.class, new PlayerAbilityEntry.PlayerAbilityMapEntryDeserializer())
                 .registerTypeAdapter(PlayerAbility.class, new PlayerAbility.PlayerAbilityDeserializer())
-                .registerTypeAdapter(Date.class, new DateTimeDeserializer()).create();
+                .registerTypeAdapter(Date.class, new DateTimeDeserializer())
+                .registerTypeAdapter(AbilityTree.class, new AbilityTree.AbilityTreeDeserializer())
+                .registerTypeAdapter(AbilityTreeArchetype.class, new AbilityTreeArchetype.AbilityTreeArchetypeDeserializer())
+                .registerTypeAdapter(AbilityTreeAbility.class, new AbilityTreeAbility.AbilityTreeAbilityDeserializer())
+                .registerTypeAdapter(AbilityMap.class, new AbilityMap.AbilityMapDeserializer())
+                .registerTypeAdapter(AbilityMapEntry.class, new AbilityMapEntry.AbilityMapEntryDeserializer())
+                .registerTypeAdapter(AspectsList.class, new AspectsList.AspectListDeserializer())
+                .registerTypeAdapter(Item.Identification.class, new Item.Identification.IdentificationDeserializer())
+                .create();
+
+        // Initialize the APIHelper with the base URL and timeout
         RateLimiter rateLimiter = new RateLimiter();
         this.helper = new APIHelper(gson, rateLimiter, baseURL, version, timeout);
 
