@@ -63,7 +63,7 @@ repositories {
 <dependency>
 	<groupId>com.github.wynnwrapper</groupId>
 	<artifactId>WynnWrapper</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 </dependency>
 ```
 
@@ -71,7 +71,7 @@ repositories {
 
 ```gradle
 dependencies {
-	implementation 'com.github.wynnwrapper:WynnWrapper:1.0.0'
+	implementation 'com.github.wynnwrapper:WynnWrapper:1.0.1'
 }
 ```
 
