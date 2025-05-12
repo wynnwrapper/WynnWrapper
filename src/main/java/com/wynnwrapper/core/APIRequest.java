@@ -12,20 +12,18 @@ import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public abstract class APIRequest {
 
-    private String version;
-    private String requestURL;
-    private List<Header> headers;
-    private int timeout;
-    private APIHelper apiHelper;
+    private final String version;
+    private final String requestURL;
+    private final List<Header> headers;
+    private final int timeout;
+    private final APIHelper apiHelper;
 
     public APIRequest(APIHelper apiHelper, String requestURL) {
         this.apiHelper = apiHelper;
@@ -73,7 +71,7 @@ public abstract class APIRequest {
         if(apiHelper.rateLimiter().isRateLimited()) {
             throw new WynnRateLimitException("Cannot make request, rate limit would be exceeded. Please try again later.",
                     apiHelper.rateLimiter().rateLimitResetTimestamp(), true);
-
+        }
 
         RequestConfig config = RequestConfig.custom()
                 .setResponseTimeout(timeout, TimeUnit.MILLISECONDS)
@@ -127,50 +125,47 @@ public abstract class APIRequest {
     }
 
     private HttpClientResponseHandler<String> createResponseHandler() {
-        return new HttpClientResponseHandler<String>() {
-            @Override
-            public String handleResponse(ClassicHttpResponse response) throws HttpException, IOException {
-                long rateLimitReset = Long.parseLong(response.getFirstHeader("RateLimit-Reset").getValue()) * 1000 + System.currentTimeMillis();
-                int rateLimitMax = Integer.parseInt(response.getFirstHeader("RateLimit-Limit").getValue());
-                int rateLimitRemaining = Integer.parseInt(response.getFirstHeader("RateLimit-Remaining").getValue());
-                apiHelper.rateLimiter().updateRateLimit(rateLimitReset, rateLimitRemaining, rateLimitMax);
-                int statusCode = response.getCode();
+        return response -> {
+            long rateLimitReset = Long.parseLong(response.getFirstHeader("RateLimit-Reset").getValue()) * 1000 + System.currentTimeMillis();
+            int rateLimitMax = Integer.parseInt(response.getFirstHeader("RateLimit-Limit").getValue());
+            int rateLimitRemaining = Integer.parseInt(response.getFirstHeader("RateLimit-Remaining").getValue());
+            apiHelper.rateLimiter().updateRateLimit(rateLimitReset, rateLimitRemaining, rateLimitMax);
+            int statusCode = response.getCode();
 
-                switch (statusCode) {
-                    case HttpStatus.SC_OK: {
-                        HttpEntity entity = response.getEntity();
-                        String responseString = entity != null ? EntityUtils.toString(entity) : null;
-                        if (responseString == null)
-                            throw new WynnResponseException("No body in request response for " + requestURL, -1);
-                        if (responseString.matches("\\{\"message\":\".*\"}")) {
-                            throw new WynnResponseException("API error when requesting " + requestURL + ": " +
-                                    responseString.split("\"message\":")[1].replace("\"", "").replace("}", ""), -1);
-                        } else if (responseString.matches("\\{\"error\":\".*\"}")) {
-                            throw new WynnResponseException("API error when requesting " + requestURL + ": " +
-                                    responseString.split("\"error\":")[1].replace("\"", "").replace("}", ""), -1);
-                        }
-                        if (!entity.getContentType().contains("application/json"))
-                            throw new WynnResponseException("Unexpected content type (not application/json): " + entity.getContentType(), -1);
-                        return responseString;
+            switch (statusCode) {
+                case HttpStatus.SC_OK: {
+                    HttpEntity entity = response.getEntity();
+                    String responseString = entity != null ? EntityUtils.toString(entity) : null;
+                    if (responseString == null)
+                        throw new WynnResponseException("No body in request response for " + requestURL, -1);
+                    if (responseString.matches("\\{\"message\":\".*\"}")) {
+                        throw new WynnResponseException("API error when requesting " + requestURL + ": " +
+                                responseString.split("\"message\":")[1].replace("\"", "").replace("}", ""), -1);
+                    } else if (responseString.matches("\\{\"error\":\".*\"}")) {
+                        throw new WynnResponseException("API error when requesting " + requestURL + ": " +
+                                responseString.split("\"error\":")[1].replace("\"", "").replace("}", ""), -1);
                     }
-                    // Error cases remain the same as in getJSONResponse
-                    case HttpStatus.SC_BAD_REQUEST:
-                        throw new WynnResponseException("400: Bad Request for " + requestURL, 400);
-                    case 429:
-                        long resetTime;
-                        try {
-                            resetTime = Long.parseLong(response.getFirstHeader("ratelimit-reset").getValue()) * 1000 + System.currentTimeMillis();
-                        } catch (NumberFormatException ex) {
-                            resetTime = -1;
-                        }
-                        throw new WynnRateLimitException("429: Too Many Requests for " + requestURL, resetTime, true);
-                    case HttpStatus.SC_NOT_FOUND:
-                        throw new WynnResponseException("404: Not Found for " + requestURL, 404);
-                    case HttpStatus.SC_SERVICE_UNAVAILABLE:
-                        throw new WynnResponseException("503: Service Unavailable " + requestURL, 503);
-                    default:
-                        throw new WynnResponseException("Unexpected status code " + statusCode + " returned by API for request " + requestURL, statusCode);
+                    if (!entity.getContentType().contains("application/json"))
+                        throw new WynnResponseException("Unexpected content type (not application/json): " + entity.getContentType(), -1);
+                    return responseString;
                 }
+                // Error cases remain the same as in getJSONResponse
+                case HttpStatus.SC_BAD_REQUEST:
+                    throw new WynnResponseException("400: Bad Request for " + requestURL, 400);
+                case 429:
+                    long resetTime;
+                    try {
+                        resetTime = Long.parseLong(response.getFirstHeader("ratelimit-reset").getValue()) * 1000 + System.currentTimeMillis();
+                    } catch (NumberFormatException ex) {
+                        resetTime = -1;
+                    }
+                    throw new WynnRateLimitException("429: Too Many Requests for " + requestURL, resetTime, true);
+                case HttpStatus.SC_NOT_FOUND:
+                    throw new WynnResponseException("404: Not Found for " + requestURL, 404);
+                case HttpStatus.SC_SERVICE_UNAVAILABLE:
+                    throw new WynnResponseException("503: Service Unavailable " + requestURL, 503);
+                default:
+                    throw new WynnResponseException("Unexpected status code " + statusCode + " returned by API for request " + requestURL, statusCode);
             }
         };
     }
