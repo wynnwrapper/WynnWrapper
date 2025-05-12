@@ -4,7 +4,7 @@ import com.wynnwrapper.core.APIHelper;
 import com.wynnwrapper.data.abilityaspects.AbilityMap;
 import com.wynnwrapper.data.abilityaspects.AbilityTree;
 import com.wynnwrapper.data.abilityaspects.AspectsList;
-import com.wynnwrapper.data.abilityaspects.enums.ClassType;
+import com.wynnwrapper.data.classes.ClassType;
 import com.wynnwrapper.routes.abilityaspects.subroutes.AbilityMapData;
 import com.wynnwrapper.routes.abilityaspects.subroutes.AbilityTreeData;
 import com.wynnwrapper.routes.abilityaspects.subroutes.AspectsListData;
@@ -18,17 +18,17 @@ public class AbilityAspectsRoute {
     }
 
     public AbilityTree getAbilityTreeData(ClassType classType) {
-        AbilityTreeData subRoute = new AbilityTreeData(apiHelper, classType.getClassType());
+        AbilityTreeData subRoute = new AbilityTreeData(apiHelper, classType.toString());
         return subRoute.getResponse(AbilityTree.class);
     }
 
     public AbilityMap getAbilityMapData(ClassType classType) {
-        AbilityMapData subRoute = new AbilityMapData(apiHelper, classType.getClassType());
+        AbilityMapData subRoute = new AbilityMapData(apiHelper, classType.toString());
         return subRoute.getResponse(AbilityMap.class);
     }
 
     public AspectsList getAspectsListData(ClassType classType) {
-        AspectsListData subRoute = new AspectsListData(apiHelper, classType.getClassType());
+        AspectsListData subRoute = new AspectsListData(apiHelper, classType.toString());
         return subRoute.getResponse(AspectsList.class);
     }
 }

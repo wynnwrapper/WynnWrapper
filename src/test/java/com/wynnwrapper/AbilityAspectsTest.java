@@ -3,7 +3,7 @@ package com.wynnwrapper;
 import com.wynnwrapper.data.abilityaspects.AbilityMap;
 import com.wynnwrapper.data.abilityaspects.AbilityTree;
 import com.wynnwrapper.data.abilityaspects.AspectsList;
-import com.wynnwrapper.data.abilityaspects.enums.ClassType;
+import com.wynnwrapper.data.classes.ClassType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

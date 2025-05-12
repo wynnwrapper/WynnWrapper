@@ -2,7 +2,6 @@ package com.wynnwrapper.routes.abilityaspects.subroutes;
 
 import com.wynnwrapper.core.APIHelper;
 import com.wynnwrapper.core.APIRequest;
-import com.wynnwrapper.data.abilityaspects.enums.ClassType;
 
 public class AbilityMapData extends APIRequest {
 
