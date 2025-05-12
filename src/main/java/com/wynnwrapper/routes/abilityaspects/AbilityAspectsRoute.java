@@ -18,17 +18,17 @@ public class AbilityAspectsRoute {
     }
 
     public AbilityTree getAbilityTreeData(ClassType classType) {
-        AbilityTreeData subRoute = new AbilityTreeData(apiHelper, classType.toString());
+        AbilityTreeData subRoute = new AbilityTreeData(apiHelper, classType.toString().toLowerCase());
         return subRoute.getResponse(AbilityTree.class);
     }
 
     public AbilityMap getAbilityMapData(ClassType classType) {
-        AbilityMapData subRoute = new AbilityMapData(apiHelper, classType.toString());
+        AbilityMapData subRoute = new AbilityMapData(apiHelper, classType.toString().toLowerCase());
         return subRoute.getResponse(AbilityMap.class);
     }
 
     public AspectsList getAspectsListData(ClassType classType) {
-        AspectsListData subRoute = new AspectsListData(apiHelper, classType.toString());
+        AspectsListData subRoute = new AspectsListData(apiHelper, classType.toString().toLowerCase());
         return subRoute.getResponse(AspectsList.class);
     }
 }
