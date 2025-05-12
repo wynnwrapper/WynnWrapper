@@ -2,16 +2,9 @@ package com.wynnwrapper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.wynnwrapper.core.APIHelper;
 import com.wynnwrapper.core.RateLimiter;
-import com.wynnwrapper.data.leaderboard.LeaderboardDeserializer;
-import com.wynnwrapper.data.leaderboard.character.CharacterLeaderboard;
-import com.wynnwrapper.data.leaderboard.gamemode.GamemodeLeaderboard;
-import com.wynnwrapper.data.leaderboard.guild.GuildLeaderboard;
-import com.wynnwrapper.data.leaderboard.player.PlayerLeaderboard;
-import com.wynnwrapper.data.leaderboard.raid.GuildRaidLeaderboard;
-import com.wynnwrapper.data.leaderboard.raid.PlayerRaidLeaderboard;
+import com.wynnwrapper.data.abilityaspects.*;
 import com.wynnwrapper.data.player.DetailedPlayer;
 import com.wynnwrapper.data.player.Player;
 import com.wynnwrapper.data.player.PlayerGlobalData;
@@ -34,7 +27,6 @@ import com.wynnwrapper.utils.DateTimeDeserializer;
 import lombok.Getter;
 
 import java.util.Date;
-import java.util.List;
 
 public class WynncraftAPI {
 
@@ -75,20 +67,6 @@ public class WynncraftAPI {
                 .registerTypeAdapter(AbilityMapEntry.class, new AbilityMapEntry.AbilityMapEntryDeserializer())
                 .registerTypeAdapter(AspectsList.class, new AspectsList.AspectListDeserializer())
                 .registerTypeAdapter(Item.Identification.class, new Item.Identification.IdentificationDeserializer())
-                .registerTypeAdapter(new TypeToken<List<PlayerLeaderboard>>() {
-                }.getType(), new LeaderboardDeserializer<PlayerLeaderboard>())
-                .registerTypeAdapter(new TypeToken<List<GuildLeaderboard>>() {
-                }.getType(), new LeaderboardDeserializer<GuildLeaderboard>())
-                .registerTypeAdapter(new TypeToken<List<GuildRaidLeaderboard>>() {
-                }.getType(), new LeaderboardDeserializer<GuildRaidLeaderboard>())
-                .registerTypeAdapter(new TypeToken<List<PlayerRaidLeaderboard>>() {
-                }.getType(), new LeaderboardDeserializer<PlayerRaidLeaderboard>())
-                .registerTypeAdapter(new TypeToken<List<GuildLeaderboard>>() {
-                }.getType(), new LeaderboardDeserializer<GuildLeaderboard>())
-                .registerTypeAdapter(new TypeToken<List<GamemodeLeaderboard>>() {
-                }.getType(), new LeaderboardDeserializer<GamemodeLeaderboard>())
-                .registerTypeAdapter(new TypeToken<List<CharacterLeaderboard>>() {
-                }.getType(), new LeaderboardDeserializer<CharacterLeaderboard>())
                 .create();
 
         // Initialize the APIHelper with the base URL and timeout
@@ -139,7 +117,5 @@ public class WynncraftAPI {
         return searchRoute;
     }
 
-    public GuildRoute guild() {
-        return guildRoute;
-    }
+    public GuildRoute guild() { return guildRoute; }
 }
