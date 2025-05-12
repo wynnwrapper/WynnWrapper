@@ -3,9 +3,11 @@ package com.wynnwrapper.data.abilityaspects.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public enum ArchetypeName {
     //Archer
-    BOTSLINGER("Botslinger"),
+    BOLTSLINGER("Boltslinger"),
     SHARPSHOOTER("Sharpshooter"),
     TRAPPER("Trapper"),
 
@@ -30,14 +32,6 @@ public enum ArchetypeName {
     ACOLYTE("Acolyte");
 
     private final String name;
-
-    ArchetypeName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
 
     @Override
     public String toString() {return name;}
