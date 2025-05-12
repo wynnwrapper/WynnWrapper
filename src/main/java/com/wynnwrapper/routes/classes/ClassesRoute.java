@@ -20,7 +20,6 @@ public class ClassesRoute {
     public Map<String, ClassMetaData> getClassList() {
         ClassListData subroute = new ClassListData(apiHelper);
         return subroute.getResponse(new TypeToken<Map<String, ClassMetaData>>() {}.getType());
-
     }
 
     public ClassInfo getClassInfo(String className) {

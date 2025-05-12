@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.wynnwrapper.core.APIHelper;
 import com.wynnwrapper.core.RateLimiter;
 import com.wynnwrapper.data.abilityaspects.*;
+import com.wynnwrapper.data.classes.ClassInfo;
 import com.wynnwrapper.data.leaderboard.LeaderboardDeserializer;
 import com.wynnwrapper.data.leaderboard.character.CharacterLeaderboard;
 import com.wynnwrapper.data.leaderboard.gamemode.GamemodeLeaderboard;
@@ -76,6 +77,7 @@ public class WynncraftAPI {
                 .registerTypeAdapter(AbilityMapEntry.class, new AbilityMapEntry.AbilityMapEntryDeserializer())
                 .registerTypeAdapter(AspectsList.class, new AspectsList.AspectListDeserializer())
                 .registerTypeAdapter(Item.Identification.class, new Item.Identification.IdentificationDeserializer())
+                .registerTypeAdapter(ClassInfo.class, new ClassInfo.ClassInfoDeserializer())
                 .registerTypeAdapter(new TypeToken<List<PlayerLeaderboard>>() {
                 }.getType(), new LeaderboardDeserializer<PlayerLeaderboard>())
                 .registerTypeAdapter(new TypeToken<List<GuildLeaderboard>>() {

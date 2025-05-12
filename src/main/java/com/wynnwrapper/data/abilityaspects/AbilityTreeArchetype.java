@@ -1,7 +1,7 @@
 package com.wynnwrapper.data.abilityaspects;
 
 import com.google.gson.*;
-import com.wynnwrapper.data.abilityaspects.enums.ArchetypeName;
+import com.wynnwrapper.data.classes.ArchetypeName;
 
 import java.lang.reflect.Type;
 
@@ -40,7 +40,7 @@ public record AbilityTreeArchetype(
         @Override
         public AbilityTreeArchetype deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject obj = json.getAsJsonObject();
-            ArchetypeName name = context.deserialize(obj.get("name"), ArchetypeName.class);
+            ArchetypeName name = obj.has("name") && !obj.get("name").isJsonNull() ? ArchetypeName.valueOf(obj.get("name").getAsString().toUpperCase()) : null;
             String description = obj.get("description").getAsString();
             String shortDescription = obj.get("shortDescription").getAsString();
             AbilityIcon icon = context.deserialize(obj.get("icon"), AbilityIcon.class);
